@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lista de compras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header class="top">
+    <div>
+      <h1>Lista de compras</h1>
+      <p class="sub" id="progressText">Nenhum item ainda</p>
+      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+    </div>
+    <div class="tag">
+      <div class="tag-label">Total estimado</div>
+      <div class="tag-price" aria-live="polite"><span class="cur">R$</span><span class="int" id="totInt">0</span><span class="dec" id="totDec">,00</span></div>
+      <p class="tag-sub" id="cartTotal">No carrinho: R$ 0,00</p>
+      <p class="tag-note" id="noPrice" hidden></p>
+    </div>
+  </header>
+
+  <nav class="lists" aria-label="Suas listas">
+    <button type="button" data-list="casa" aria-pressed="true"><span class="lname">Minha casa</span><span class="lcount">0</span></button>
+    <button type="button" data-list="mae" aria-pressed="false"><span class="lname">Mãe</span><span class="lcount">0</span></button>
+  </nav>
+
+  <form class="add" id="addForm" novalidate>
+    <div class="row">
+      <div class="field grow">
+        <label for="name">Item</label>
+        <input id="name" type="text" list="suggestions" autocomplete="off" maxlength="60" placeholder="Ex.: arroz, banana, detergente">
+        <datalist id="suggestions"></datalist>
+      </div>
+      <div class="field qty-f">
+        <label for="qty">Qtd.</label>
+        <input id="qty" type="number" inputmode="numeric" min="1" max="99" step="1" value="1">
+      </div>
+      <div class="field cat-f">
+        <label for="cat">Seção</label>
+        <select id="cat"></select>
+      </div>
+      <div class="field price-f">
+        <label for="price">Preço unitário</label>
+        <input id="price" type="text" inputmode="decimal" autocomplete="off" placeholder="Opcional">
+      </div>
+      <button class="submit" type="submit">Adicionar</button>
+    </div>
+    <p class="err" id="err" role="alert" hidden></p>
+  </form>
+
+  <div class="tools" id="tools" hidden>
+    <div class="seg" role="group" aria-label="Filtrar itens">
+      <button type="button" data-filter="all" aria-pressed="true">Todos</button>
+      <button type="button" data-filter="todo" aria-pressed="false">Faltam</button>
+      <button type="button" data-filter="done" aria-pressed="false">No carrinho</button>
+    </div>
+    <div class="actions">
+      <button type="button" class="link" id="copyBtn">Copiar o que falta</button>
+      <button type="button" class="link" id="uncheckBtn">Desmarcar tudo</button>
+      <button type="button" class="link" id="clearBtn">Remover marcados</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+</main>
+
+<div class="toast-wrap"><div class="toast" id="toast" role="status"></div></div>
+
+<script src="script.js"></script>
+</body>
+</html>
