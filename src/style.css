@@ -13,7 +13,6 @@
   --focus: #1D4ED8;
   --tag-bg: #FFD60A;
   --tag-ink: #10192E;
-  --tag-price: #B80F2B;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -71,9 +70,8 @@ button { cursor: pointer; }
 
 main { max-width: 680px; margin: 0 auto; padding: 28px 16px 96px; }
 
-/* Cabeçalho: o título e a etiqueta de preço de gôndola */
-.top { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: end; margin-bottom: 28px; }
-@media (min-width: 560px) { .top { grid-template-columns: 1fr auto; } }
+/* Cabeçalho */
+.top { margin-bottom: 28px; }
 h1 {
   margin: 0 0 12px;
   font-size: clamp(2.4rem, 8vw, 3.4rem);
@@ -85,27 +83,6 @@ h1 {
 .sub { margin: 0 0 8px; color: var(--muted); }
 .progress { height: 6px; max-width: 320px; background: var(--line); overflow: hidden; }
 .bar { height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
-
-.tag {
-  min-width: 256px;
-  padding: 14px 22px 16px;
-  border-radius: 6px;
-  background: var(--tag-bg);
-  color: var(--tag-ink);
-}
-.tag-label { font-size: .9375rem; font-weight: 700; }
-.tag-price {
-  display: flex; align-items: flex-start;
-  margin: 4px 0 6px;
-  color: var(--tag-price);
-  font-weight: 800; font-stretch: 78%; line-height: .9;
-  font-variant-numeric: tabular-nums;
-}
-.cur { margin: .6rem .35rem 0 0; font-size: 1.25rem; }
-.int { font-size: 4.2rem; letter-spacing: -0.02em; }
-.dec { margin-top: .4rem; font-size: 1.75rem; }
-.tag-sub { margin: 0; font-size: .9375rem; font-weight: 600; }
-.tag-note { margin: 2px 0 0; font-size: .8125rem; opacity: .8; }
 
 /* Alternância entre listas */
 .lists { display: flex; gap: 10px; margin: 0 0 22px; }
@@ -129,7 +106,6 @@ h1 {
 .field.grow { flex: 1 1 100%; }
 .field.qty-f { flex: 0 0 84px; }
 .field.cat-f { flex: 1 1 170px; }
-.field.price-f { flex: 1 1 120px; }
 .field label { font-size: .8125rem; font-weight: 600; color: var(--muted); }
 .field input, .field select {
   width: 100%; height: 44px; padding: 0 12px;
@@ -169,8 +145,8 @@ h1 {
 
 .item {
   display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
-  grid-template-areas: "chk txt qty tot del";
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas: "chk txt qty del";
   align-items: center;
   gap: 8px 12px;
   padding: 12px 0;
@@ -178,7 +154,7 @@ h1 {
 }
 .item:first-child { border-top: 0; }
 @media (max-width: 519px) {
-  .item { grid-template-columns: auto 1fr auto; grid-template-areas: "chk txt del" ". qty tot"; }
+  .item { grid-template-columns: auto 1fr auto; grid-template-areas: "chk txt del" ". qty qty"; }
 }
 .item input[type="checkbox"] {
   grid-area: chk;
@@ -196,7 +172,6 @@ h1 {
 }
 .txt { grid-area: txt; display: flex; flex-direction: column; min-width: 0; }
 .txt label { font-size: 1.125rem; font-weight: 600; line-height: 1.25; cursor: pointer; overflow-wrap: anywhere; }
-.txt small { color: var(--muted); font-size: .8125rem; }
 .item.done .txt label { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
 
 .qty { grid-area: qty; display: inline-flex; align-items: center; justify-self: start; border: 1px solid var(--line); border-radius: 999px; }
@@ -204,7 +179,6 @@ h1 {
 .qty button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; font-size: 1.15rem; font-weight: 700; line-height: 1; }
 .qty button:disabled { opacity: .35; cursor: not-allowed; }
 .qty span { min-width: 1.7rem; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
-.tot { grid-area: tot; width: 6rem; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 .del { grid-area: del; justify-self: end; width: 40px; height: 40px; margin-right: -8px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.5rem; line-height: 1; }
 .del:hover { color: var(--danger); }
 
