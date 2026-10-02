@@ -17,12 +17,6 @@
       <p class="sub" id="progressText">Nenhum item ainda</p>
       <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
     </div>
-    <div class="tag">
-      <div class="tag-label">Total estimado</div>
-      <div class="tag-price" aria-live="polite"><span class="cur">R$</span><span class="int" id="totInt">0</span><span class="dec" id="totDec">,00</span></div>
-      <p class="tag-sub" id="cartTotal">No carrinho: R$ 0,00</p>
-      <p class="tag-note" id="noPrice" hidden></p>
-    </div>
   </header>
 
   <nav class="lists" aria-label="Suas listas">
@@ -34,8 +28,7 @@
     <div class="row">
       <div class="field grow">
         <label for="name">Item</label>
-        <input id="name" type="text" list="suggestions" autocomplete="off" maxlength="60" placeholder="Ex.: arroz, banana, detergente">
-        <datalist id="suggestions"></datalist>
+        <input id="name" type="text" autocomplete="off" maxlength="60" placeholder="Ex.: arroz, banana, detergente">
       </div>
       <div class="field qty-f">
         <label for="qty">Qtd.</label>
@@ -44,10 +37,6 @@
       <div class="field cat-f">
         <label for="cat">Seção</label>
         <select id="cat"></select>
-      </div>
-      <div class="field price-f">
-        <label for="price">Preço unitário</label>
-        <input id="price" type="text" inputmode="decimal" autocomplete="off" placeholder="Opcional">
       </div>
       <button class="submit" type="submit">Adicionar</button>
     </div>
