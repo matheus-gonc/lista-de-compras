@@ -2,6 +2,8 @@
 
 Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e `src/style.css`. Não há `package.json`, testes, lint ou CI.
 
+**Contexto do produto:** app mobile-first para cuidadores/filhos de idosos que fazem compras para duas casas ("Minha casa" e "Mãe"). Toda decisão de UI deve priorizar: uso com uma mão, alvos de toque ≥ 44px (variável `--touch` no CSS), contraste AA e textos grandes. Não degrade essas propriedades ao alterar o CSS. Detalhes de produto e UX no `README.md`.
+
 ## Rodando e verificando
 
 - Para rodar, basta abrir `index.html` no navegador (não há servidor ou dev server).
@@ -17,4 +19,5 @@ Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e
 - Todo texto de UI é pt-BR (mensagens, categorias, keywords de sugestão de seção). Novos textos devem seguir isso.
 - Itens não têm preço: a estrutura é `{ id, name, qty, cat, done }` — não reintroduza campos monetários (a interface não exibe totais).
 - CSS usa variáveis em `:root` com tema escuro automático (`prefers-color-scheme`) e override manual via `data-theme="light"|"dark"` — use as variáveis existentes, nunca cores fixas.
+- Mobile-first: alvos de toque usam a variável `--touch` (44px); `touch-action: manipulation` nos botões evita o atraso de 300ms no iOS — não remova. Inputs devem manter fonte ≥ 16px para evitar o auto-zoom do iOS Safari.
 - `skills/` contém material de design reutilizável, não faz parte do app — não o referencie no código.

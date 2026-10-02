@@ -13,6 +13,8 @@
   --focus: #1D4ED8;
   --tag-bg: #FFD60A;
   --tag-ink: #10192E;
+  /* Alvo mínimo de toque (44px, diretriz iOS/Android) */
+  --touch: 44px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -53,6 +55,8 @@
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 html { scroll-padding-top: env(safe-area-inset-top, 0px); }
 body {
@@ -63,9 +67,17 @@ body {
   font-size: 1rem;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
+  /* Evita o "flash" cinza ao tocar em iOS/Android */
+  -webkit-tap-highlight-color: transparent;
 }
 button, input, select { font: inherit; color: inherit; }
-button { cursor: pointer; }
+button {
+  cursor: pointer;
+  /* Remove o atraso de 300ms / zoom de duplo toque em iOS Safari */
+  touch-action: manipulation;
+}
+/* Fonte ≥ 16px nos campos evita o auto-zoom do iOS ao focar */
+input, select { font-size: 1rem; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
 main { max-width: 680px; margin: 0 auto; padding: 28px 16px 96px; }
@@ -84,11 +96,11 @@ h1 {
 .progress { height: 6px; max-width: 320px; background: var(--line); overflow: hidden; }
 .bar { height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
 
-/* Alternância entre listas */
+/* Alternância entre listas — alvos altos, fáceis de acertar com o polegar */
 .lists { display: flex; gap: 10px; margin: 0 0 22px; }
 .lists button {
   flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px;
+  min-height: 52px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px;
   background: var(--surface); font-weight: 700; font-size: 1.0625rem;
 }
 .lists button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-ink); border-color: var(--btn-bg); }
@@ -108,17 +120,19 @@ h1 {
 .field.cat-f { flex: 1 1 170px; }
 .field label { font-size: .8125rem; font-weight: 600; color: var(--muted); }
 .field input, .field select {
-  width: 100%; height: 44px; padding: 0 12px;
+  width: 100%; height: 48px; padding: 0 12px;
   background: var(--field); border: 1px solid var(--line); border-radius: 8px;
 }
 .field input::placeholder { color: var(--muted); opacity: .8; }
+/* Botão principal em largura total e alto (zona do polegar) */
 .submit {
   flex: 1 1 100%;
-  height: 46px; margin-top: 4px;
+  height: 52px; margin-top: 4px;
   border: 0; border-radius: 8px;
   background: var(--btn-bg); color: var(--btn-ink);
-  font-weight: 700;
+  font-size: 1.0625rem; font-weight: 700;
 }
+.submit:active { opacity: .88; }
 @media (min-width: 560px) { .submit { flex: 0 0 auto; align-self: flex-end; margin-top: 0; padding: 0 24px; } }
 .err { margin: 10px 0 0; color: var(--danger); font-weight: 600; font-size: .9375rem; }
 .err[hidden] { display: none; }
@@ -126,10 +140,11 @@ h1 {
 /* Filtros e ações */
 .tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; margin: 24px 0 0; }
 .seg { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-.seg button { border: 0; background: transparent; padding: 6px 14px; border-radius: 6px; font-size: .9375rem; font-weight: 600; color: var(--muted); }
+.seg button { min-height: 40px; border: 0; background: transparent; padding: 8px 14px; border-radius: 6px; font-size: .9375rem; font-weight: 600; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-ink); }
 .actions { display: flex; flex-wrap: wrap; gap: 4px 16px; }
-.link { border: 0; background: none; padding: 6px 0; font-size: .9375rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+/* Ações secundárias com área de toque real, não só o texto sublinhado */
+.link { min-height: var(--touch); border: 0; background: none; padding: 8px 0; font-size: .9375rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .link:disabled { color: var(--muted); opacity: .5; cursor: not-allowed; text-decoration: none; }
 
 /* Seções: lista aberta, como uma lista de papel, com cada seção marcada por uma régua grossa */
@@ -159,10 +174,11 @@ h1 {
 .item input[type="checkbox"] {
   grid-area: chk;
   appearance: none; -webkit-appearance: none;
-  width: 26px; height: 26px; margin: 0;
+  width: 28px; height: 28px; margin: 0;
   border: 2px solid var(--muted); border-radius: 6px;
   background: transparent center / 16px 16px no-repeat;
   cursor: pointer;
+  touch-action: manipulation;
   transition: background-color .15s ease, border-color .15s ease;
 }
 .item input[type="checkbox"]:checked {
@@ -171,16 +187,19 @@ h1 {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .txt { grid-area: txt; display: flex; flex-direction: column; min-width: 0; }
-.txt label { font-size: 1.125rem; font-weight: 600; line-height: 1.25; cursor: pointer; overflow-wrap: anywhere; }
+/* A label ocupa toda a largura da linha: tocar no nome marca/desmarca (Fitts) */
+.txt label { font-size: 1.125rem; font-weight: 600; line-height: 1.4; padding: 6px 0; margin: -6px 0; cursor: pointer; overflow-wrap: anywhere; touch-action: manipulation; }
 .item.done .txt label { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
 
 .qty { grid-area: qty; display: inline-flex; align-items: center; justify-self: start; border: 1px solid var(--line); border-radius: 999px; }
 @media (min-width: 520px) { .qty { justify-self: end; } }
-.qty button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; font-size: 1.15rem; font-weight: 700; line-height: 1; }
-.qty button:disabled { opacity: .35; cursor: not-allowed; }
+.qty button { width: var(--touch); height: var(--touch); border: 0; border-radius: 50%; background: transparent; font-size: 1.25rem; font-weight: 700; line-height: 1; }
+.qty button:active { background: var(--line); }
+.qty button:disabled { opacity: .35; cursor: not-allowed; background: transparent; }
 .qty span { min-width: 1.7rem; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
-.del { grid-area: del; justify-self: end; width: 40px; height: 40px; margin-right: -8px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.5rem; line-height: 1; }
+.del { grid-area: del; justify-self: end; width: var(--touch); height: var(--touch); margin-right: -8px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.5rem; line-height: 1; }
 .del:hover { color: var(--danger); }
+.del:active { color: var(--danger); background: var(--line); }
 
 .empty { margin-top: 32px; padding: 32px 20px; border: 2px dashed var(--line); border-radius: 10px; text-align: center; color: var(--muted); }
 .empty strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 1.25rem; font-weight: 800; font-stretch: 80%; }
@@ -201,6 +220,6 @@ h1 {
   font-weight: 600;
 }
 .toast:empty { display: none; }
-.toast button { border: 0; background: none; padding: 4px 2px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; color: inherit; }
+.toast button { min-height: var(--touch); border: 0; background: none; padding: 8px 4px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
