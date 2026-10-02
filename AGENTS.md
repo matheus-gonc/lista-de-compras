@@ -11,9 +11,10 @@ Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e
 
 - O código fica em `src/`; o `script.js` na raiz é um stub vazio — não edite nem remova sem verificar.
 - Todo o estado vive em um IIFE em `src/script.js`. Estado: `state = { lists: [...], active }`, com `cur()` retornando a lista ativa e a variável `items` sempre apontando para `cur().items`.
-- Nunca reatribua `items` diretamente (`items = ...`) — use `syncItems(novoArray)`, que atualiza também `cur().items`; caso contrário a mudança não é persistida.
+- Nunca reatribua `items` diretamente (`items = ...`) — use `syncItems(novoArray)`, que atualiza também `cur().items`; caso contrário a mudança não é persistida. (Exceção já existente: o listener de troca de abas faz `items = cur().items` de propósito.)
+- As abas de listas são hardcoded: os botões `[data-list]` em `index.html` precisam bater com os ids em `state.lists`/`defaultState()`. Nova lista exige editar os dois lugares.
 - Persistência via `localStorage` na chave `lista-compras:v2`. A chave antiga `lista-compras:v1` (lista única) é migrada para a lista "casa" no `load()` — não remova essa migração.
 - Todo texto de UI é pt-BR (mensagens, categorias, keywords de sugestão de seção). Novos textos devem seguir isso.
 - Itens não têm preço: a estrutura é `{ id, name, qty, cat, done }` — não reintroduza campos monetários (a interface não exibe totais).
 - CSS usa variáveis em `:root` com tema escuro automático (`prefers-color-scheme`) e override manual via `data-theme="light"|"dark"` — use as variáveis existentes, nunca cores fixas.
-- `skills/skill.md` é um arquivo de instruções de design (skill reutilizável), não faz parte do app — não o referencie no código.
+- `skills/` contém material de design reutilizável, não faz parte do app — não o referencie no código.
