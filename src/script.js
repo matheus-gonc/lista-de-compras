@@ -28,8 +28,6 @@
     higiene: ['shampoo', 'condicionador', 'sabonete', 'creme dental', 'pasta de dente', 'escova de dente', 'papel higienico', 'desodorante', 'absorvente', 'fio dental', 'fralda', 'algodao', 'hidratante', 'protetor solar', 'lamina de barbear']
   };
 
-  var SUGGESTIONS = ['Arroz', 'Feijão', 'Macarrão', 'Açúcar', 'Sal', 'Óleo de soja', 'Azeite', 'Café', 'Farinha de trigo', 'Leite', 'Ovos', 'Queijo mussarela', 'Iogurte', 'Manteiga', 'Pão de forma', 'Banana', 'Maçã', 'Tomate', 'Cebola', 'Batata', 'Alho', 'Cenoura', 'Alface', 'Frango', 'Carne moída', 'Linguiça', 'Presunto', 'Água mineral', 'Suco', 'Refrigerante', 'Detergente', 'Sabão em pó', 'Amaciante', 'Desinfetante', 'Papel higiênico', 'Papel toalha', 'Sabonete', 'Shampoo', 'Creme dental', 'Saco de lixo'];
-
   var state = load();
   function cur() {
     return state.lists.filter(function (l) { return l.id === state.active; })[0] || state.lists[0];
@@ -42,11 +40,8 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var listEl = $('list'), formEl = $('addForm'), nameEl = $('name'), qtyEl = $('qty'),
-      catEl = $('cat'), priceEl = $('price'), errEl = $('err'), toastEl = $('toast'),
+      catEl = $('cat'), errEl = $('err'), toastEl = $('toast'),
       toolsEl = $('tools');
-
-  var money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-  function fmt(n) { return money.format(n); }
 
   function norm(s) {
     return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -87,7 +82,6 @@
         name: i.name,
         qty: Math.min(99, Math.max(1, parseInt(i.qty, 10) || 1)),
         cat: CATS.some(function (c) { return c.id === i.cat; }) ? i.cat : 'outros',
-        price: typeof i.price === 'number' && isFinite(i.price) && i.price >= 0 ? i.price : null,
         done: !!i.done
       };
     });
@@ -118,15 +112,6 @@
   }
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* sem armazenamento */ }
-  }
-
-  function parsePrice(str) {
-    var s = String(str).replace(/[R$\s]/g, '');
-    if (!s) return null;
-    if (s.indexOf(',') !== -1) s = s.replace(/\./g, '').replace(',', '.');
-    var n = parseFloat(s);
-    if (!isFinite(n) || n < 0 || !/^[0-9.]+$/.test(s)) return NaN;
-    return n;
   }
 
   function clampQty(v) {
@@ -181,11 +166,6 @@
     lab.htmlFor = cb.id;
     lab.textContent = it.name;
     txt.append(lab);
-    if (it.price !== null) {
-      var small = document.createElement('small');
-      small.textContent = fmt(it.price) + ' cada';
-      txt.append(small);
-    }
 
     var qty = document.createElement('div');
     qty.className = 'qty';
@@ -209,10 +189,6 @@
     inc.addEventListener('click', function () { it.qty = Math.min(99, it.qty + 1); save(); render(); });
     qty.append(dec, num, inc);
 
-    var tot = document.createElement('span');
-    tot.className = 'tot';
-    tot.textContent = it.price !== null ? fmt(it.price * it.qty) : '';
-
     var del = document.createElement('button');
     del.type = 'button';
     del.className = 'del';
@@ -222,7 +198,7 @@
       removeWhere(function (x) { return x.id === it.id; }, '“' + it.name + '” removido.');
     });
 
-    li.append(cb, txt, qty, tot, del);
+    li.append(cb, txt, qty, del);
     return li;
   }
 
@@ -241,28 +217,11 @@
     var total = items.length;
     var done = items.filter(function (i) { return i.done; }).length;
     var pending = total - done;
-    var est = 0, cart = 0, noPrice = 0;
-    items.forEach(function (i) {
-      if (i.price === null) { noPrice++; return; }
-      var line = i.price * i.qty;
-      est += line;
-      if (i.done) cart += line;
-    });
 
     $('progressText').textContent = total === 0
       ? 'Nenhum item ainda'
       : done + ' de ' + total + (total === 1 ? ' item' : ' itens') + ' no carrinho';
     $('bar').style.width = total ? Math.round((done / total) * 100) + '%' : '0%';
-
-    var parts = est.toFixed(2).split('.');
-    $('totInt').textContent = Number(parts[0]).toLocaleString('pt-BR');
-    $('totDec').textContent = ',' + parts[1];
-    $('cartTotal').textContent = 'No carrinho: ' + fmt(cart);
-    var np = $('noPrice');
-    if (noPrice > 0) {
-      np.hidden = false;
-      np.textContent = noPrice === 1 ? '1 item sem preço não entra na soma.' : noPrice + ' itens sem preço não entram na soma.';
-    } else { np.hidden = true; }
 
     // Ferramentas
     toolsEl.hidden = total === 0;
@@ -359,8 +318,6 @@
     e.preventDefault();
     var name = nameEl.value.trim().replace(/\s+/g, ' ');
     if (!name) { showError('Digite o nome do item.'); nameEl.focus(); return; }
-    var price = parsePrice(priceEl.value);
-    if (Number.isNaN(price)) { showError('Preço inválido. Use números, como 4,90.'); priceEl.focus(); return; }
     clearError();
 
     var qty = clampQty(qtyEl.value);
@@ -368,16 +325,14 @@
     var existing = items.filter(function (i) { return norm(i.name) === key && !i.done; })[0];
     if (existing) {
       existing.qty = Math.min(99, existing.qty + qty);
-      if (price !== null) existing.price = price;
       toast('“' + existing.name + '” já estava na lista. Somei à quantidade.');
     } else {
-      items.push({ id: uid(), name: name, qty: qty, cat: catEl.value, price: price, done: false });
+      items.push({ id: uid(), name: name, qty: qty, cat: catEl.value, done: false });
     }
     save();
 
     nameEl.value = '';
     qtyEl.value = 1;
-    priceEl.value = '';
     catTouched = false;
     catEl.value = 'outros';
     render();
@@ -389,7 +344,6 @@
     if (!errEl.hidden) clearError();
   });
   catEl.addEventListener('change', function () { catTouched = true; });
-  priceEl.addEventListener('input', function () { if (!errEl.hidden) clearError(); });
 
   document.querySelectorAll('[data-filter]').forEach(function (b) {
     b.addEventListener('click', function () { filter = b.dataset.filter; render(); });
@@ -429,11 +383,5 @@
     catEl.append(o);
   });
   catEl.value = 'outros';
-  var dl = $('suggestions');
-  SUGGESTIONS.forEach(function (s) {
-    var o = document.createElement('option');
-    o.value = s;
-    dl.append(o);
-  });
   render();
 })();
