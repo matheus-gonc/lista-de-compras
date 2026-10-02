@@ -14,6 +14,6 @@ Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e
 - Nunca reatribua `items` diretamente (`items = ...`) — use `syncItems(novoArray)`, que atualiza também `cur().items`; caso contrário a mudança não é persistida.
 - Persistência via `localStorage` na chave `lista-compras:v2`. A chave antiga `lista-compras:v1` (lista única) é migrada para a lista "casa" no `load()` — não remova essa migração.
 - Todo texto de UI é pt-BR (mensagens, categorias, keywords de sugestão de seção). Novos textos devem seguir isso.
-- Formatação monetária: BRL via `Intl.NumberFormat`; entrada de preço aceita vírgula (`parsePrice` em `src/script.js`).
+- Itens não têm preço: a estrutura é `{ id, name, qty, cat, done }` — não reintroduza campos monetários (a interface não exibe totais).
 - CSS usa variáveis em `:root` com tema escuro automático (`prefers-color-scheme`) e override manual via `data-theme="light"|"dark"` — use as variáveis existentes, nunca cores fixas.
 - `skills/skill.md` é um arquivo de instruções de design (skill reutilizável), não faz parte do app — não o referencie no código.
