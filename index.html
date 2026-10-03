@@ -15,8 +15,15 @@
 <body>
   <main>
     <header class="top">
-      <div>
+      <!-- Tarefa 1: linha com título + botão de alternância de tema (sol/lua) -->
+      <div class="top-row">
         <h1>Lista de compras</h1>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro e escuro" aria-pressed="false">
+          <span class="theme-icon-sun" aria-hidden="true">☀️</span>
+          <span class="theme-icon-moon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+      <div>
         <p class="sub" id="progressText">Nenhum item ainda</p>
         <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
       </div>
@@ -60,6 +67,11 @@
     </div>
 
     <div id="list"></div>
+
+    <!-- Tarefa 2: rodapé semântico -->
+    <footer class="footer">
+      <p>&copy; 2026 Desenvolvido por Matheus. Todos os direitos reservados.</p>
+    </footer>
   </main>
 
   <div class="toast-wrap"><div class="toast" id="toast" role="status"></div></div>

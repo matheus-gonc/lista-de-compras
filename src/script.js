@@ -375,6 +375,35 @@
     });
   });
 
+  // Tarefa 1: alternância de tema claro/escuro com persistência
+  var THEME_KEY = 'lista-compras:tema';
+  var themeBtn = $('themeToggle');
+  function applyTheme(theme) {
+    // "auto" remove o override e segue o prefers-color-scheme do sistema
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', theme);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    updateThemeBtn();
+  }
+  function currentTheme() {
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if (explicit) return explicit;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function updateThemeBtn() {
+    if (themeBtn) themeBtn.setAttribute('aria-pressed', String(currentTheme() === 'dark'));
+  }
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* sem armazenamento */ }
+      applyTheme(next);
+    });
+    try { applyTheme(localStorage.getItem(THEME_KEY)); } catch (e) { applyTheme(null); }
+  }
+
   // Início
   CATS.forEach(function (c) {
     var o = document.createElement('option');

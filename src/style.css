@@ -92,6 +92,29 @@ h1 {
   font-stretch: 75%;
   letter-spacing: -0.01em;
 }
+/* Tarefa 1: título e botão de tema lado a lado, alinhados com Flexbox */
+.top-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 12px;
+}
+.top-row h1 { margin: 0; }
+/* Tarefa 1: botão de tema com alvo de toque ≥ 44px (usa --touch) */
+.theme-toggle {
+  flex: 0 0 auto;
+  min-width: var(--touch); min-height: var(--touch);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--surface); font-size: 1.25rem; line-height: 1;
+}
+.theme-toggle:active { background: var(--line); }
+/* Mostra apenas o ícone do próximo tema (lua no claro, sol no escuro) */
+.theme-toggle .theme-icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .theme-icon-sun { display: inline; }
+:root[data-theme="dark"] .theme-toggle .theme-icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .theme-icon-sun { display: inline; }
+  :root:not([data-theme="light"]) .theme-toggle .theme-icon-moon { display: none; }
+}
 .sub { margin: 0 0 8px; color: var(--muted); }
 .progress { height: 6px; max-width: 320px; background: var(--line); overflow: hidden; }
 .bar { height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
@@ -221,5 +244,14 @@ h1 {
 }
 .toast:empty { display: none; }
 .toast button { min-height: var(--touch); border: 0; background: none; padding: 8px 4px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; color: inherit; }
+
+/* Tarefa 2: rodapé centralizado, com respiro para a barra de gestos do celular
+   (safe-area-inset-bottom) para não ser encoberto nem sobrepor os itens */
+.footer {
+  margin-top: 48px; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--line);
+  color: var(--muted); text-align: center; font-size: .875rem;
+}
+.footer p { margin: 0; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
