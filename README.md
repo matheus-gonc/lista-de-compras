@@ -13,7 +13,9 @@ Funcionalidades principais:
 - Quantidade ajustável com botões `−`/`+` (1 a 99).
 - Filtros **Todos / Faltam / No carrinho**, barra de progresso da compra e ações em lote (desmarcar tudo, remover marcados).
 - Toast com **Desfazer** nas remoções.
-- Tema claro/escuro automático (segue o sistema), offline por padrão (dados em `localStorage`).
+- Tema claro/escuro: automático (segue o sistema) **e botão de alternância manual** (☀️/🌙) ao lado do título — a escolha fica salva e persiste ao recarregar.
+- Rodapé com direitos autorais, afastado da barra de gestos do celular.
+- Offline por padrão (dados em `localStorage`).
 
 ## Decisões de UX/UI (mobile-first)
 
@@ -22,13 +24,15 @@ Funcionalidades principais:
 - **Lei de Fitts:** tocar no nome do item marca/desmarca — a área clicável é a linha inteira, não só o quadrado do checkbox.
 - **Sem atraso de toque:** `touch-action: manipulation` elimina os 300ms de espera e o zoom de duplo toque no iOS; `-webkit-tap-highlight-color: transparent` remove o flash cinza ao tocar.
 - **Fonte ≥ 16px nos inputs** para evitar o auto-zoom do iOS Safari ao focar o campo; `enterkeyhint="done"` mostra a tecla "concluir" no teclado virtual.
-- **Safe areas:** respeita os recortes (notch) de telas modernas via `env(safe-area-inset-*)` nos quatro lados.
+- **Safe areas:** respeita os recortes (notch) de telas modernas via `env(safe-area-inset-*)` nos quatro lados; o rodapé soma o `safe-area-inset-bottom` ao seu padding para não ser coberto pela barra de gestos do iOS/Android.
 - **Acessibilidade:** contraste AA nas duas paletas, `:focus-visible` evidente, `aria-pressed` nas abas e filtros, labels com `aria-label` descritivos ("Aumentar quantidade de arroz"), `role="status"/"alert"` para toast e erros, e respeito a `prefers-reduced-motion`.
 - **Robustez:** se o `localStorage` falhar (modo privado etc.), a lista continua funcionando na sessão; dados antigos (v1) são migrados automaticamente.
 
 ## Instalação e execução
 
-Não há build nem dependências. Duas opções:
+O app está publicado em **https://lista-de-compras-list.vercel.app/** — basta abrir no navegador do celular ou computador.
+
+Para rodar localmente, não há build nem dependências. Duas opções:
 
 1. **Abrir direto:** dê dois cliques em `index.html` — funciona em qualquer navegador moderno.
 2. **Servidor local (opcional, recomendado para testar no celular):**
@@ -47,7 +51,7 @@ Depois acesse `http://localhost:8080` no navegador, ou `http://<IP-do-computador
 - **HTML5** semântico (`index.html`)
 - **CSS3** puro com custom properties e tema claro/escuro (`src/style.css`)
 - **JavaScript** vanilla, sem frameworks, em um IIFE (`src/script.js`)
-- Persistência: **`localStorage`** (chave `lista-compras:v2`, com migração automática da v1)
+- Persistência: **`localStorage`** (chave `lista-compras:v2`, com migração automática da v1; preferência de tema na chave `lista-compras:tema`)
 - Fonte: Bricolage Grotesque (Google Fonts, única dependência externa; o app funciona sem ela via fallback de fontes do sistema)
 
 Sem `package.json`, bundler, testes automatizados ou CI. Verificação de sintaxe do JS: `node --check src/script.js`.
@@ -56,9 +60,9 @@ Sem `package.json`, bundler, testes automatizados ou CI. Verificação de sintax
 
 ```
 lista-de-compras/
-├── index.html        # Marcação completa da tela única (abas, formulário, lista, toast)
+├── index.html        # Marcação completa da tela única (abas, formulário, lista, toast, rodapé)
 ├── src/
-│   ├── script.js     # Todo o estado e lógica (IIFE): listas, itens, categorize, render, persistência
+│   ├── script.js     # Todo o estado e lógica (IIFE): listas, itens, categorize, tema, render, persistência
 │   └── style.css     # Tema via CSS custom properties, layout mobile-first, safe areas
 ├── script.js         # Stub vazio na raiz (não é usado pelo app)
 ├── skills/           # Documentos de design reutilizáveis (não fazem parte do app)
