@@ -18,6 +18,6 @@ Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e
 - Persistência via `localStorage` na chave `lista-compras:v2`. A chave antiga `lista-compras:v1` (lista única) é migrada para a lista "casa" no `load()` — não remova essa migração.
 - Todo texto de UI é pt-BR (mensagens, categorias, keywords de sugestão de seção). Novos textos devem seguir isso.
 - Itens não têm preço: a estrutura é `{ id, name, qty, cat, done }` — não reintroduza campos monetários (a interface não exibe totais).
-- CSS usa variáveis em `:root` com tema escuro automático (`prefers-color-scheme`) e override manual via `data-theme="light"|"dark"` — use as variáveis existentes, nunca cores fixas.
+- CSS usa variáveis em `:root` com tema escuro automático (`prefers-color-scheme`) e override manual via `data-theme="light"|"dark"` — use as variáveis existentes, nunca cores fixas. O override é controlado pelo botão `#themeToggle` no cabeçalho (lógica no IIFE de `src/script.js`); a preferência persiste na chave `localStorage` `lista-compras:tema`.
 - Mobile-first: alvos de toque usam a variável `--touch` (44px); `touch-action: manipulation` nos botões evita o atraso de 300ms no iOS — não remova. Inputs devem manter fonte ≥ 16px para evitar o auto-zoom do iOS Safari.
 - `skills/` contém material de design reutilizável, não faz parte do app — não o referencie no código.
