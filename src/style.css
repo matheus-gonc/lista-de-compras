@@ -162,7 +162,7 @@ h1 {
 
 /* Filtros e ações */
 .tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; margin: 24px 0 0; }
-.seg { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.seg { display: inline-flex; margin-inline: auto; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .seg button { min-height: 40px; border: 0; background: transparent; padding: 8px 14px; border-radius: 6px; font-size: .9375rem; font-weight: 600; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-ink); }
 .actions { display: flex; flex-wrap: wrap; gap: 4px 16px; }
