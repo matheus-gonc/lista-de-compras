@@ -205,6 +205,9 @@
   function render() {
     var active = document.activeElement;
     var focusKey = active && active.dataset ? active.dataset.key : null;
+    // Preserva a rolagem: reconstruir a lista e focar um elemento que mudou
+    // de posição não deve mover a página (sem pulo de scroll ao marcar itens)
+    var scrollY = window.scrollY;
 
     // Abas das listas
     document.querySelectorAll('[data-list]').forEach(function (b) {
@@ -268,8 +271,12 @@
 
     if (focusKey) {
       var el = document.querySelector('[data-key="' + focusKey + '"]');
-      if (el && !el.disabled) el.focus();
+      // preventScroll evita que o foco role a página até o elemento recriado
+      if (el && !el.disabled) el.focus({ preventScroll: true });
     }
+    // Salvaguarda: se a altura do documento mudou durante o re-render,
+    // devolve a página exatamente para onde o usuário estava
+    if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
   }
 
   function emptyBox(title, text) {

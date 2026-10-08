@@ -170,15 +170,16 @@ h1 {
 .link { min-height: var(--touch); border: 0; background: none; padding: 8px 0; font-size: .9375rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .link:disabled { color: var(--muted); opacity: .5; cursor: not-allowed; text-decoration: none; }
 
-/* Seções: lista aberta, como uma lista de papel, com cada seção marcada por uma régua grossa */
-.group { margin-top: 32px; }
+/* Seções: lista aberta, como uma lista de papel, com cada seção marcada por uma régua grossa
+   (compactada ~25% para exibir mais itens por tela no celular) */
+.group { margin-top: 24px; }
 .group h2 {
   display: flex; align-items: baseline; justify-content: space-between;
-  margin: 0; padding: 8px 0 6px;
+  margin: 0; padding: 6px 0 5px;
   border-top: 3px solid var(--rule);
-  font-size: 1.6rem; font-weight: 800; font-stretch: 75%; line-height: 1.1;
+  font-size: 1.2rem; font-weight: 800; font-stretch: 75%; line-height: 1.1;
 }
-.count { font-size: 1rem; font-weight: 700; font-stretch: 100%; color: var(--muted); font-variant-numeric: tabular-nums; }
+.count { font-size: .875rem; font-weight: 700; font-stretch: 100%; color: var(--muted); font-variant-numeric: tabular-nums; }
 .rows { margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--line); }
 
 .item {
@@ -186,8 +187,8 @@ h1 {
   grid-template-columns: auto 1fr auto auto;
   grid-template-areas: "chk txt qty del";
   align-items: center;
-  gap: 8px 12px;
-  padding: 12px 0;
+  gap: 6px 10px;
+  padding: 9px 0;
   border-top: 1px solid var(--line);
 }
 .item:first-child { border-top: 0; }
@@ -197,9 +198,9 @@ h1 {
 .item input[type="checkbox"] {
   grid-area: chk;
   appearance: none; -webkit-appearance: none;
-  width: 28px; height: 28px; margin: 0;
+  width: 26px; height: 26px; margin: 0;
   border: 2px solid var(--muted); border-radius: 6px;
-  background: transparent center / 16px 16px no-repeat;
+  background: transparent center / 14px 14px no-repeat;
   cursor: pointer;
   touch-action: manipulation;
   transition: background-color .15s ease, border-color .15s ease;
@@ -210,21 +211,22 @@ h1 {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .txt { grid-area: txt; display: flex; flex-direction: column; min-width: 0; }
-/* A label ocupa toda a largura da linha: tocar no nome marca/desmarca (Fitts) */
-.txt label { font-size: 1.125rem; font-weight: 600; line-height: 1.4; padding: 6px 0; margin: -6px 0; cursor: pointer; overflow-wrap: anywhere; touch-action: manipulation; }
+/* A label ocupa toda a largura da linha: tocar no nome marca/desmarca (Fitts).
+   Padding vertical garante área de toque ≥ 44px mesmo com o texto compacto */
+.txt label { font-size: .9375rem; font-weight: 600; line-height: 1.35; padding: 12px 0; margin: -12px 0; cursor: pointer; overflow-wrap: anywhere; touch-action: manipulation; }
 .item.done .txt label { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
 
 .qty { grid-area: qty; display: inline-flex; align-items: center; justify-self: start; border: 1px solid var(--line); border-radius: 999px; }
 @media (min-width: 520px) { .qty { justify-self: end; } }
-.qty button { width: var(--touch); height: var(--touch); border: 0; border-radius: 50%; background: transparent; font-size: 1.25rem; font-weight: 700; line-height: 1; }
+.qty button { width: var(--touch); height: var(--touch); border: 0; border-radius: 50%; background: transparent; font-size: 1rem; font-weight: 700; line-height: 1; }
 .qty button:active { background: var(--line); }
 .qty button:disabled { opacity: .35; cursor: not-allowed; background: transparent; }
-.qty span { min-width: 1.7rem; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
-.del { grid-area: del; justify-self: end; width: var(--touch); height: var(--touch); margin-right: -8px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.5rem; line-height: 1; }
+.qty span { min-width: 1.3rem; text-align: center; font-weight: 700; font-size: .875rem; font-variant-numeric: tabular-nums; }
+.del { grid-area: del; justify-self: end; width: var(--touch); height: var(--touch); margin-right: -8px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.25rem; line-height: 1; }
 .del:hover { color: var(--danger); }
 .del:active { color: var(--danger); background: var(--line); }
 
-.empty { margin-top: 32px; padding: 32px 20px; border: 2px dashed var(--line); border-radius: 10px; text-align: center; color: var(--muted); }
+.empty { margin-top: 24px; padding: 24px 16px; border: 2px dashed var(--line); border-radius: 10px; text-align: center; color: var(--muted); }
 .empty strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 1.25rem; font-weight: 800; font-stretch: 80%; }
 
 /* Aviso */
