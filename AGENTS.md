@@ -11,7 +11,6 @@ Aplicativo estático sem build: `index.html` (raiz) referencia `src/script.js` e
 
 ## Arquitetura e convenções
 
-- O código fica em `src/`; o `script.js` na raiz é um stub vazio — não edite nem remova sem verificar.
 - Todo o estado vive em um IIFE em `src/script.js`. Estado: `state = { lists: [...], active }`, com `cur()` retornando a lista ativa e a variável `items` sempre apontando para `cur().items`.
 - Nunca reatribua `items` diretamente (`items = ...`) — use `syncItems(novoArray)`, que atualiza também `cur().items`; caso contrário a mudança não é persistida. (Exceção já existente: o listener de troca de abas faz `items = cur().items` de propósito.)
 - As abas de listas são hardcoded: os botões `[data-list]` em `index.html` precisam bater com os ids em `state.lists`/`defaultState()`. Nova lista exige editar os dois lugares.
